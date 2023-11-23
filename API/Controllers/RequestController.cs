@@ -76,4 +76,15 @@ public class RequestController : ApiBaseController
         return NoContent();
     }
 
+    //6.¿Cuántos pedidos hay en cada estado? Ordena el resultado de forma descendente por el número de pedidos.
+
+    [HttpGet("quantityOfRequestDesc")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult> GetQuantityOfRequestDesc()
+    {
+        var results = await _unitOfWork.Requests.GetQuantityOfRequestDesc();
+        return Ok(results);
+    }
+
 }

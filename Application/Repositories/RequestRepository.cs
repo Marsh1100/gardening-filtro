@@ -12,5 +12,15 @@ public class RequestRepository : GenericRepository<Request>, IRequest
         _context = context;
     }
 
-
+    public async  Task<IEnumerable<object>> GetQuantityOfRequestDesc()
+    {
+        return await _context.Requests
+                        .GroupBy(a=> a.State)
+                        .Select(s=> new {
+                            state = s.Key,
+                            quantity = s.Count()
+                        })
+                        .OrderByDescending(o=> o.quantity)
+                        .ToListAsync();
+    }
 }
