@@ -63,10 +63,24 @@ y registro de todos sus productos y servicios.
   ```
   http://localhost:5136/api/Employee/bossAndSuperBoss
   ```
-  ```
+  ```c#
+  public async Task<IEnumerable<object>> GetBossAndSuperBoss()
+    {
 
+        return  await(from emp in _context.Employees 
+                    join boss in _context.Employees  on emp.IdBoss equals boss.Id into h
+                    from  allBoss in h.DefaultIfEmpty()
+                    join superBoss in _context.Employees  on allBoss.IdBoss equals superBoss.Id into h2
+                    from allSuperBoss in h2.DefaultIfEmpty()
+                    select new 
+                    {
+                        employee = emp.Name,
+                        boss = allBoss.Name ?? "-",
+                        superBoss = allSuperBoss.Name ?? "-"
+                    }).ToListAsync();
+    }
   ```
-  <b>Explicación:</b>
+  <b>Explicación:</b> Como esta es una tabla circular,y, para obtener los datos del jefe debemos consultar la misma tabla, es necesario acceder a ella misma utilizando diferentes alias, como lo es el emp, boss y superBoss. Luego hacer uso del join e ir comparando el idBoss con el id que debe existir en la tabla empleado. Como este campo puede ser nulo, hacemos uso del into para obtener el subconjunto y mediante el método .DefaultIfEmpty permitir que se muestren todos los registros así estos no existan. Luego se hace la seleccion de los nombres de cada una de las personas y en el caso de que el campo se nulo simplemente poner un "-".
   <br><br>
 <b>5</b> y <b>6</b> Devuelve un listado de los productos que nunca han aparecido en un pedido. El resultado debe mostrar el nombre, la descripción y la imagen del producto.
   ```
@@ -75,12 +89,11 @@ y registro de todos sus productos y servicios.
   ```c#
   public async Task<IEnumerable<object>> GetWithoutRequest()
     {
-
         var products = await _context.Products.ToListAsync();
         var producttypes  = await _context.Producttypes.ToListAsync();
         var requestdetails = await _context.Requestdetails.ToListAsync();
 
-       return (from product in  products
+        return (from product in  products
                 join requestdetail in requestdetails on product.Id equals requestdetail.IdProduct into h
                 join producttype in producttypes on product.IdProductType equals producttype.Id
                 from all in h.DefaultIfEmpty()
