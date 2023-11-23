@@ -82,7 +82,7 @@ y registro de todos sus productos y servicios.
   ```
   <b>Explicación:</b> Como esta es una tabla circular,y, para obtener los datos del jefe debemos consultar la misma tabla, es necesario acceder a ella misma utilizando diferentes alias, como lo es el emp, boss y superBoss. Luego hacer uso del join e ir comparando el idBoss con el id que debe existir en la tabla empleado. Como este campo puede ser nulo, hacemos uso del into para obtener el subconjunto y mediante el método .DefaultIfEmpty permitir que se muestren todos los registros así estos no existan. Luego se hace la seleccion de los nombres de cada una de las personas y en el caso de que el campo se nulo simplemente poner un "-".
   <br><br>
-<b>5 y <b>6 Devuelve un listado de los productos que nunca han aparecido en un pedido. El resultado debe mostrar el nombre, la descripción y la imagen del producto. </b>
+<b>5 y 6 Devuelve un listado de los productos que nunca han aparecido en un pedido. El resultado debe mostrar el nombre, la descripción y la imagen del producto. </b>
   ```
   http://localhost:5136/api/Product/withoutRequest
   ```
