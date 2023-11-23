@@ -56,7 +56,7 @@ y registro de todos sus productos y servicios.
                     .ToListAsync();
     }
   ```
-  <b>Explicación:</b> Para esta consulta se debe hacer uso de 4 tablas diferentes, por ello utilizamos un join que permita tener toda la información requerida mediante los Id que se compartan entre las tablas, para luego seleccionar los valores que se solicitan y se utiliza el método .Distinc para que no se repitan..
+  <b>Explicación:</b> Para esta consulta se debe hacer uso de 4 tablas diferentes, por ello utilizamos un join que permita tener toda la información requerida mediante los Id que se compartan entre las tablas, para luego seleccionar los valores que se solicitan y se utiliza el método .Distinc para que no se repitan.
   <br><br>
   
 <b>4 Devuelve un listado que muestre el nombre de cada empleados, el nombre de su jefe y el nombre del jefe de sus jefe.</b>
