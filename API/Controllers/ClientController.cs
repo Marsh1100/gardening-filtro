@@ -86,7 +86,7 @@ public class ClientController : ApiBaseController
         return Ok(results);
     }
 
-    //7.Devuelve un listado que muestre solamente los clientes que no han realizado ningún pago.
+    //8.Devuelve un listado que muestre solamente los clientes que no han realizado ningún pago.
      [HttpGet("clientsWithoutPayments")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -96,13 +96,24 @@ public class ClientController : ApiBaseController
         return _mapper.Map<List<ClientDto>>(results);
     }
 
-    //7.Devuelve el listado de clientes donde aparezca el nombre del cliente, el nombre y primer apellido de su representante de ventas y la ciudad donde está su oficina.
+    //9.Devuelve el listado de clientes donde aparezca el nombre del cliente, el nombre y primer apellido de su representante de ventas y la ciudad donde está su oficina.
     [HttpGet("clientsWithSellerAndOffice")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<IEnumerable<ClientDto>>> GetClientsWithSellerAndOffice()
     {
         var results = await _unitOfWork.Clients.GetClientsWithSellerAndOffice();
+        return Ok(results);
+    }
+
+
+    //10.Devuelve el nombre del cliente, el nombre y primer apellido de su representante de ventas y el número de teléfono de la oficina del representante de ventas, de aquellos clientes que no hayan realizado ningún pago.
+    [HttpGet("clientsWithoutPaymentsWithSellerAndOffice")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<IEnumerable<ClientDto>>> GetClientsWithoutPaymentsWithSellerAndOffice()
+    {
+        var results = await _unitOfWork.Clients.GetClientsWithoutPaymentsWithSellerAndOffice();
         return Ok(results);
     }
 

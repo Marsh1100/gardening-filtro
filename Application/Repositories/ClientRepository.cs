@@ -57,4 +57,29 @@ public class ClientRepository : GenericRepository<Client>, IClient
                     )
                     .ToListAsync();
     }
+
+    public async Task<IEnumerable<object>> GetClientsWithoutPaymentsWithSellerAndOffice()
+    {
+
+        var clients = await _context.Clients.ToListAsync();
+        var offices  = await _context.Offices.ToListAsync();
+        var payments  = await _context.Payments.ToListAsync();
+        var employees = await _context.Employees.ToListAsync();
+
+        return  (from client in clients
+                        join employee in employees on client.IdEmployee equals employee.Id
+                        join office in offices on employee.IdOffice equals office.Id
+                        join payment in payments on client.Id equals payment.IdClient into h
+                        from all in h.DefaultIfEmpty()
+                        where all?.Id == null   
+                        select new {
+                            name_client = client.NameClient,
+                            employee = new {
+                                    name = employee.Name + employee.FirstSurname,
+                                    phone_of_office = office.Phone
+                            }
+                        }
+                    ).Distinct();
+                   
+    }
 }
