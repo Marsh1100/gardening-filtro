@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using Domain.Entities;
 
-namespace Persistence.Entities;
+namespace Domain.Entities;
 
-public partial class Requestdetail
+public partial class Requestdetail : BaseEntity
 {
-    public int Id { get; set; }
 
     public int IdRequest { get; set; }
 

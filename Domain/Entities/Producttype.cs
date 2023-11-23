@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Persistence.Entities;
+namespace Domain.Entities;
 
-public partial class Producttype
+public partial class Producttype : BaseEntity
 {
-    public int Id { get; set; }
 
     public string Type { get; set; }
 

@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using Domain.Entities;
 
-namespace Persistence.Entities;
+namespace Domain.Entities;
 
-public partial class Request
+public partial class Request : BaseEntity
 {
-    public int Id { get; set; }
-
     public DateOnly RequestDate { get; set; }
 
     public DateOnly ExpectedDate { get; set; }

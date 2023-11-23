@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using Domain.Entities;
 
-namespace Persistence.Entities;
+namespace Domain.Entities;
 
-public partial class Payment
+public partial class Payment : BaseEntity
 {
-    public int Id { get; set; }
 
     public int IdClient { get; set; }
 
