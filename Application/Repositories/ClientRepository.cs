@@ -40,4 +40,21 @@ public class ClientRepository : GenericRepository<Client>, IClient
                         select client
                 ).Distinct();
     }
+
+
+    public async Task<IEnumerable<object>> GetClientsWithSellerAndOffice()
+    {
+        return await (from client in _context.Clients
+                        join employee in _context.Employees on client.IdEmployee equals employee.Id
+                        join office in _context.Offices on employee.IdOffice equals office.Id   
+                        select new {
+                            name_client = client.NameClient,
+                            employee = new {
+                                    name = employee.Name + employee.FirstSurname,
+                                    city_of_office = office.City
+                            }
+                        }
+                    )
+                    .ToListAsync();
+    }
 }

@@ -96,4 +96,14 @@ public class ClientController : ApiBaseController
         return _mapper.Map<List<ClientDto>>(results);
     }
 
+    //7.Devuelve el listado de clientes donde aparezca el nombre del cliente, el nombre y primer apellido de su representante de ventas y la ciudad donde está su oficina.
+    [HttpGet("clientsWithSellerAndOffice")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<IEnumerable<ClientDto>>> GetClientsWithSellerAndOffice()
+    {
+        var results = await _unitOfWork.Clients.GetClientsWithSellerAndOffice();
+        return Ok(results);
+    }
+
 }

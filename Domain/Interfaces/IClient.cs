@@ -6,5 +6,7 @@ public interface IClient : IGenericRepository<Client>
 { 
     Task<IEnumerable<object>> GetClientsWithPaymentsAndSeller();
     Task<IEnumerable<Client>> GetClientsWithoutPayments();
+    Task<IEnumerable<object>> GetClientsWithSellerAndOffice();
+
 
 }
