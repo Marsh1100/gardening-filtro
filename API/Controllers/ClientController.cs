@@ -76,4 +76,14 @@ public class ClientController : ApiBaseController
         return NoContent();
     }
 
+    //3.Devuelve el nombre de los clientes que han hecho pagos y el nombre de sus representantes junto con la ciudad de la oficina a la que pertenece el representante.
+    [HttpGet("clientsWithPaymentsAndSeller")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult> GetClientsWithPaymentsAndSeller()
+    {
+        var results = await _unitOfWork.Clients.GetClientsWithPaymentsAndSeller();
+        return Ok(results);
+    }
+
 }
