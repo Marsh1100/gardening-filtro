@@ -19,4 +19,11 @@ public class PaymentRepository : GenericRepository<Payment>, IPayment
                 .OrderByDescending(o=> o.Total)
                 .ToListAsync();
     }
+
+    public async Task<IEnumerable<object>> GetMethodsPayments()
+    {
+        return   await _context.Payments
+                .GroupBy(a=>a.PaymentMethod)
+                .Select(b=> b.Key ).ToListAsync();
+    }
 }

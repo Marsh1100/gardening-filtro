@@ -76,4 +76,16 @@ public class ProductController : ApiBaseController
         return NoContent();
     }
 
+    //5.Devuelve un listado de los productos que nunca han aparecido en un pedido. El resultado debe mostrar el nombre, la descripción y la imagen del producto.
+    [HttpGet("withoutRequest")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+
+    public async Task<ActionResult> GetWithoutRequest()
+    {
+        var results = await _unitOfWork.Products.GetWithoutRequest();
+        return Ok(results);
+    }
+
+
 }

@@ -81,11 +81,22 @@ public class PaymentController : ApiBaseController
     [HttpGet("paymentsByPaypal2008")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-
     public async Task<ActionResult<IEnumerable<PaymentDto>>> GetPaymentsByPaypal2008()
     {
         var results = await _unitOfWork.Payments.GetPaymentsByPaypal2008();
         return _mapper.Map<List<PaymentDto>>(results);
+    }
+
+
+    //2.Devuelve un listado con todas las formas de pago que aparecen en la tabla pago. Tenga en cuenta que no deben aparecer formas de pago repetidas
+
+    [HttpGet("methodsPayment")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult> GetMethodsPayments()
+    {
+        var results = await _unitOfWork.Payments.GetMethodsPayments();
+        return Ok(results);
     }
 
 }
