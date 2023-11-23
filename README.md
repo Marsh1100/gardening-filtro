@@ -3,7 +3,7 @@ La empresa Gardens especializada en Jardineria desea construir una aplicacion qu
 y registro de todos sus productos y servicios.
 
 # Endpoints
-<b>1</b> Devuelve un listado con todos los pagos que se realizaron en el año 2008 mediante Paypal. Ordene el resultado de mayor a menor.
+<b>1 Devuelve un listado con todos los pagos que se realizaron en el año 2008 mediante Paypal. Ordene el resultado de mayor a menor. </b>
   ```
   http://localhost:5136/api/Payment/paymentsByPaypal2008
   ```
@@ -18,7 +18,7 @@ y registro de todos sus productos y servicios.
   ```
 <b>Explicación: </b>Mediante el context se accede a la data de la tabla Payments para luego filtrar con el método .Where que los pagos hayan sido mediante Paypal y en el año correspondiente. Asímismo mediante el método .OrderByDescending se selecciona la columna por la cual se quiere ordenar de mayor a menor.<br><br>
 
-<b>2</b> Devuelve un listado con todas las formas de pago que aparecen en la tabla pago. Tenga en cuenta que no deben aparecer formas de pago repetidas
+<b>2 Devuelve un listado con todas las formas de pago que aparecen en la tabla pago. Tenga en cuenta que no deben aparecer formas de pago repetidas</b>
   ```
   http://localhost:5136/api/Payment/methodsPayments
   ```
@@ -33,7 +33,7 @@ y registro de todos sus productos y servicios.
   <b>Explicación:</b> Mediante el context se accede a la data de la tabla Payments, luego se agrupa con el método .GroupBy la columna PayMethod para que se agrupen sin que se repitan y luego mediante un select seleccionamos la llave de la anterior agrupación, que contiene los diferentes metodos de pago posibles.
   <br><br>
 
-<b>3</b> Devuelve el nombre de los clientes que han hecho pagos y el nombre de sus representantes junto con la ciudad de la oficina a la que pertenece el representante.
+<b>3 Devuelve el nombre de los clientes que han hecho pagos y el nombre de sus representantes junto con la ciudad de la oficina a la que pertenece el representante.</b>
   ```
   http://localhost:5136/api/Client/clientsWithPaymentsAndSeller
   ```
@@ -59,7 +59,7 @@ y registro de todos sus productos y servicios.
   <b>Explicación:</b> Para esta consulta se debe hacer uso de 4 tablas diferentes, por ello utilizamos un join que permita tener toda la información requerida mediante los Id que se compartan entre las tablas, para luego seleccionar los valores que se solicitan y se utiliza el método .Distinc para que no se repitan..
   <br><br>
   
-<b>4</b> Devuelve un listado que muestre el nombre de cada empleados, el nombre de su jefe y el nombre del jefe de sus jefe.
+<b>4 Devuelve un listado que muestre el nombre de cada empleados, el nombre de su jefe y el nombre del jefe de sus jefe.</b>
   ```
   http://localhost:5136/api/Employee/bossAndSuperBoss
   ```
@@ -82,7 +82,7 @@ y registro de todos sus productos y servicios.
   ```
   <b>Explicación:</b> Como esta es una tabla circular,y, para obtener los datos del jefe debemos consultar la misma tabla, es necesario acceder a ella misma utilizando diferentes alias, como lo es el emp, boss y superBoss. Luego hacer uso del join e ir comparando el idBoss con el id que debe existir en la tabla empleado. Como este campo puede ser nulo, hacemos uso del into para obtener el subconjunto y mediante el método .DefaultIfEmpty permitir que se muestren todos los registros así estos no existan. Luego se hace la seleccion de los nombres de cada una de las personas y en el caso de que el campo se nulo simplemente poner un "-".
   <br><br>
-<b>5</b> y <b>6</b> Devuelve un listado de los productos que nunca han aparecido en un pedido. El resultado debe mostrar el nombre, la descripción y la imagen del producto.
+<b>5 y <b>6 Devuelve un listado de los productos que nunca han aparecido en un pedido. El resultado debe mostrar el nombre, la descripción y la imagen del producto. </b>
   ```
   http://localhost:5136/api/Product/withoutRequest
   ```
@@ -108,7 +108,7 @@ y registro de todos sus productos y servicios.
   ```
   <b>Explicación:</b> Para esta consulta se debe hacer uso de tres tablas diferentes. Como la consulta solicita que se requiere obtener los productos que no se encuentren en un pedido se utiliza join y a su vez into, que permite trae un subconjunto de la tabla requestdetail para despues mediante la funcion .DefaultIfEmpty muestre un registro así este no contenga información. Luego con el condicional Where nos aseguramos que solo sean los pedidos que se encuentran vacios (es decir, tiene el IdCliente pero este no tiene registro) y selecciona los valores que se solicitan y se utiliza el método .Distinc para que no se repitan..
   <br><br>
-<b>7</b> ¿Cuántos pedidos hay en cada estado? Ordena el resultado de forma descendente por el número de pedidos.
+<b>7  ¿Cuántos pedidos hay en cada estado? Ordena el resultado de forma descendente por el número de pedidos. </b>
    ```
    http://localhost:5136/api/Request/quantityOfRequestDesc
    ```
@@ -127,7 +127,7 @@ y registro de todos sus productos y servicios.
   ```
   <b>Explicación:</b> En esta consulta mediante el context accedemos a la tabla requests donde hacemos una agrupación según el estado en que se encuentre el pedido. Para después seleccionar los datos mostrar su key y con el método .Count va a mostrar el total de registros que hay por ese state. Al final mediante el método .OrderByDescending se ordenan de forma descendiente dicha cantidad contada.
   <br><br>
-<b>8</b> Devuelve un listado que muestre solamente los clientes que no han realizado ningún pago.
+<b>8 Devuelve un listado que muestre solamente los clientes que no han realizado ningún pago. </b>
   ```
   http://localhost:5136/api/Client/clientsWithoutPayments
   ```
@@ -145,7 +145,7 @@ y registro de todos sus productos y servicios.
   ```
   <b>Explicación:</b> Se utilizan las tablas clients y payments para determinar cuales son esos clientes que no se encuentran en la tabla payments. Para eso se usa un join y a su vez un into para contener ese subconjunto de payments para luego mediante el metodo .DefaultIFEmpty permitir mostrar todos los registros así estos se encuentren vacíos. Luego con el condicional where nos aseguramos que el registro en una columna especifica (en este caso Id de payment) sea nulo para así seleccionar a los clientes y se utiliza el método .Distinc para que no se repitan..
   <br><br>
-<b>9</b> Devuelve el listado de clientes donde aparezca el nombre del cliente, el nombre y primer apellido de su representante de ventas y la ciudad donde está su oficina.
+<b>9 Devuelve el listado de clientes donde aparezca el nombre del cliente, el nombre y primer apellido de su representante de ventas y la ciudad donde está su oficina.</b>
   ```
   http://localhost:5136/api/Client/clientsWithSellerAndOffice
   ```
@@ -168,7 +168,7 @@ y registro de todos sus productos y servicios.
   ```
   <b>Explicación:</b> Para esta consulta se deben acceder a tres tablas en donde mediante el uso del join podemos unirlas según sus columnas que se comparta la misma información para así porder seleccionar los valores que se solicitan en la consulta.
   <br><br>
-<b>10</b> Devuelve el nombre del cliente, el nombre y primer apellido de su representante de ventas y el número de teléfono de la oficina del representante de ventas, de aquellos clientes que no hayan realizado ningún pago.
+<b>10 Devuelve el nombre del cliente, el nombre y primer apellido de su representante de ventas y el número de teléfono de la oficina del representante de ventas, de aquellos clientes que no hayan realizado ningún pago.</b>
   ```
   http://localhost:5136/api/Client/clientsWithoutPaymentsWithSellerAndOffice
   ```
