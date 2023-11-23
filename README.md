@@ -56,7 +56,7 @@ y registro de todos sus productos y servicios.
                     .ToListAsync();
     }
   ```
-  <b>Explicación:</b> Para esta consulta se debe hacer uso de 4 tablas diferentes, por ello utilizamos un join que permita tener toda la información requerida mediante los Id que se compartan entre las tablas, para luego seleccionar los valores que se solicitan.
+  <b>Explicación:</b> Para esta consulta se debe hacer uso de 4 tablas diferentes, por ello utilizamos un join que permita tener toda la información requerida mediante los Id que se compartan entre las tablas, para luego seleccionar los valores que se solicitan y se utiliza el método .Distinc para que no se repitan..
   <br><br>
   
 <b>4</b> Devuelve un listado que muestre el nombre de cada empleados, el nombre de su jefe y el nombre del jefe de sus jefe.
@@ -93,7 +93,7 @@ y registro de todos sus productos y servicios.
                             
     }
   ```
-  <b>Explicación:</b> Para esta consulta se debe hacer uso de tres tablas diferentes. Como la consulta solicita que se requiere obtener los productos que no se encuentren en un pedido se utiliza join y a su vez into, que permite acceder al el conjunto de la tabla requestdetail para despues mediante la funcion .DefaultIfEmpty muestre un registro así este no contenga información. Luego con el condicional Where nos aseguramos que solo sean los pedidos que se encuentran vacios (es decir, tiene el IdCliente pero este no tiene registro) y selecciona los valores que se solicitan.
+  <b>Explicación:</b> Para esta consulta se debe hacer uso de tres tablas diferentes. Como la consulta solicita que se requiere obtener los productos que no se encuentren en un pedido se utiliza join y a su vez into, que permite trae un subconjunto de la tabla requestdetail para despues mediante la funcion .DefaultIfEmpty muestre un registro así este no contenga información. Luego con el condicional Where nos aseguramos que solo sean los pedidos que se encuentran vacios (es decir, tiene el IdCliente pero este no tiene registro) y selecciona los valores que se solicitan y se utiliza el método .Distinc para que no se repitan..
   <br><br>
 <b>7</b> ¿Cuántos pedidos hay en cada estado? Ordena el resultado de forma descendente por el número de pedidos.
    ```
@@ -130,23 +130,55 @@ y registro de todos sus productos y servicios.
                 ).Distinct();
     }
   ```
-  <b>Explicación:</b> Se utilizan las tablas clients y payments para determinar cuales son esos clientes que no se encuentran en la tabla payments. Para eso se usa un join y a su vez un into para contener ese conjunto de payments para luego mediante el metodo .DefaultIFEmpty permitir mostrar todos los registros así estos se encuentren vacíos. Luego con el condicional where nos aseguramos que el registro en una columna especifica (en este caso Id de payment) sea nulo para así seleccionar a los clientes.
+  <b>Explicación:</b> Se utilizan las tablas clients y payments para determinar cuales son esos clientes que no se encuentran en la tabla payments. Para eso se usa un join y a su vez un into para contener ese subconjunto de payments para luego mediante el metodo .DefaultIFEmpty permitir mostrar todos los registros así estos se encuentren vacíos. Luego con el condicional where nos aseguramos que el registro en una columna especifica (en este caso Id de payment) sea nulo para así seleccionar a los clientes y se utiliza el método .Distinc para que no se repitan..
   <br><br>
 <b>9</b> Devuelve el listado de clientes donde aparezca el nombre del cliente, el nombre y primer apellido de su representante de ventas y la ciudad donde está su oficina.
   ```
   http://localhost:5136/api/Client/clientsWithSellerAndOffice
   ```
+  ```c#
+  public async Task<IEnumerable<object>> GetClientsWithSellerAndOffice()
+    {
+        return await (from client in _context.Clients
+                        join employee in _context.Employees on client.IdEmployee equals employee.Id
+                        join office in _context.Offices on employee.IdOffice equals office.Id   
+                        select new {
+                            name_client = client.NameClient,
+                            employee = new {
+                                    name = employee.Name + employee.FirstSurname,
+                                    city_of_office = office.City
+                            }
+                        }
+                    )
+                    .ToListAsync();
+    }
   ```
-
-  ```
-  <b>Explicación:</b>
+  <b>Explicación:</b> Para esta consulta se deben acceder a tres tablas en donde mediante el uso del join podemos unirlas según sus columnas que se comparta la misma información para así porder seleccionar los valores que se solicitan en la consulta.
   <br><br>
 <b>10</b> Devuelve el nombre del cliente, el nombre y primer apellido de su representante de ventas y el número de teléfono de la oficina del representante de ventas, de aquellos clientes que no hayan realizado ningún pago.
   ```
   http://localhost:5136/api/Client/clientsWithoutPaymentsWithSellerAndOffice
   ```
-  ```
+  ```c#
+  var clients = await _context.Clients.ToListAsync();
+        var offices  = await _context.Offices.ToListAsync();
+        var payments  = await _context.Payments.ToListAsync();
+        var employees = await _context.Employees.ToListAsync();
 
+        return  (from client in clients
+                        join employee in employees on client.IdEmployee equals employee.Id
+                        join office in offices on employee.IdOffice equals office.Id
+                        join payment in payments on client.Id equals payment.IdClient into h
+                        from all in h.DefaultIfEmpty()
+                        where all?.Id == null   
+                        select new {
+                            name_client = client.NameClient,
+                            employee = new {
+                                    name = employee.Name + employee.FirstSurname,
+                                    phone_of_office = office.Phone
+                            }
+                        }
+                    ).Distinct();
   ```
-  <b>Explicación:</b>
+  <b>Explicación:</b> Para esta consulta es necesario acceder a 4 tablas diferentes. Para ello utilizamos el join y a su vez el into que tendrá un subconjuto que mediante el método .DefaultIfEmpty podemos traer todos los registros. Luego mediante el condicional Where se selecciona esos registros que no contengan datos de los clientes, garantizando así que no se han hecho pagos. Se finaliza seleccionando los valores solicitados y se utiliza el método .Distinc para que no se repitan.
   <br><br>
