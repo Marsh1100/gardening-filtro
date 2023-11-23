@@ -74,4 +74,15 @@ public class EmployeeController : ApiBaseController
         return NoContent();
     }
 
+    //4.Devuelve un listado que muestre el nombre de cada empleados, el nombre de su jefe y el nombre del jefe de sus jefe.
+
+    [HttpGet("bossAndSuperBoss")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult> GetBossAndSuperBoss()
+    {
+        var results = await _unitOfWork.Employees.GetBossAndSuperBoss();
+        return Ok(results);
+    }
+
 }
