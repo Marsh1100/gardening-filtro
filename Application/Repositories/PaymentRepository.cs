@@ -12,5 +12,11 @@ public class PaymentRepository : GenericRepository<Payment>, IPayment
         _context = context;
     }
 
-
+    public async Task<IEnumerable<Payment>> GetPaymentsByPaypal2008()
+    {
+        return   await _context.Payments
+                .Where(d=> d.PaymentMethod == "Paypal" && d.PaymentDate.Year.Equals(2008))
+                .OrderByDescending(o=> o.Total)
+                .ToListAsync();
+    }
 }
