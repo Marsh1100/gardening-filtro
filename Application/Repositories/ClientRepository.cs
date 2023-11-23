@@ -29,4 +29,15 @@ public class ClientRepository : GenericRepository<Client>, IClient
                     .Distinct()
                     .ToListAsync();
     }
+
+    public async Task<IEnumerable<Client>> GetClientsWithoutPayments()
+    {
+        var clients = await _context.Clients.ToListAsync();
+        return  (from client in clients
+                        join payment in _context.Payments on client.Id equals payment.IdClient into h
+                        from all in h.DefaultIfEmpty()
+                        where all?.Id == null
+                        select client
+                ).Distinct();
+    }
 }

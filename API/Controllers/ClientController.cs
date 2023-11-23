@@ -86,4 +86,14 @@ public class ClientController : ApiBaseController
         return Ok(results);
     }
 
+    //7.Devuelve un listado que muestre solamente los clientes que no han realizado ningún pago.
+     [HttpGet("clientsWithoutPayments")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<IEnumerable<ClientDto>>> GetClientsWithoutPayments()
+    {
+        var results = await _unitOfWork.Clients.GetClientsWithoutPayments();
+        return _mapper.Map<List<ClientDto>>(results);
+    }
+
 }
