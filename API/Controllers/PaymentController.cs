@@ -76,4 +76,16 @@ public class PaymentController : ApiBaseController
         return NoContent();
     }
 
+    //1. Devuelve un listado con todos los pagos que se realizaron en el año 2008 mediante Paypal. Ordene el resultado de mayor a menor.
+
+    [HttpGet]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+
+    public async Task<ActionResult<IEnumerable<PaymentDto>>> GetPaymentsByPaypal2008()
+    {
+        var results = await _unitOfWork.Payments.GetPaymentsByPaypal2008();
+        return _mapper.Map<List<PaymentDto>>(results);
+    }
+
 }
